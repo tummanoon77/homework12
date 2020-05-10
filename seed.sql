@@ -28,3 +28,34 @@ CREATE TABLE employee(
   -- FOREIGN KEY (manager_id) REFERANCES role(roleId)
   PRIMARY KEY (id)
 )
+
+INSERT INTO department(name) VALUE ("IT");
+INSERT INTO department(name) VALUE ("HR");
+INSERT INTO department(name) VALUE ("Accounting");
+INSERT INTO department(name) VALUE ("Engineer");
+INSERT INTO department(name) VALUE ("Sales");
+
+
+INSERT INTO role(title, yearly_salary, department_id) VALUES
+("Financial Advisor", "65000", "3"),
+("Technicial Support", "60000" , "1"),
+("Accountant", "75000","3"),
+("Software Engineer","85000","4"),
+("Management","67000","2"),
+("HR Analyst","87500","2"),
+("Electric Engineer","99900","4"),
+("Sales Director","85000","5"),
+("Sales Analyst","75000","5"),
+("Sales Trainer","70000","5"),
+("Civil Engineer", "105000","4"),
+("Mechanic Engineer","110000","4"),
+("IT Manager","85000","1"),
+("IT programer","98000","1"),
+("IT Specialist", "115000","1"),
+("Auditor","99900","3"),
+("HR Trainer","85000","2"),
+("Representative","50000","2"),
+("Financial Analyst","75000","3");
+
+
+
