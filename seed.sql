@@ -4,30 +4,29 @@ CREATE DATABASE employee_tracker;
 USE employee_tracker;
 
 CREATE TABLE department(
- id INTEGER(11) NOT NULL AUTO_INCREMENT,  
- name VARCHAR(30) NULL,
- PRIMARY KEY (id)
-)
+ Depid INT PRIMARY KEY AUTO_INCREMENT,  
+ name VARCHAR(30) NULL
+ 
+);
 
 CREATE TABLE role(
-  id INTEGER(11) NOT NULL AUTO_INCREMENT, 
-  title VARCHA(30) NULL,
+  Roleid INT PRIMARY KEY AUTO_INCREMENT, 
+  title VARCHAR (30) NULL,
   yearly_salary DECIMAL,
   department_id INT,
   FOREIGN KEY (department_id) REFERENCES department(DepId)
-  PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE employee(
-  id INTEGER(11) NOT NULL AUTO_INCREMENT, 
-  first_name(30) NULL,
-  last_name(30) NULL,
+  Employee_id INT PRIMARY KEY AUTO_INCREMENT, 
+  first_name VARCHAR(30) NULL,
+  last_name VARCHAR(30) NULL,
   role_id INT NOT NULL,
   manager_id INT,
-  FOREIGN KEY (role_id) REFERENCES role(roleId)
+  FOREIGN KEY (role_id) REFERENCES role(RoleId)
   -- FOREIGN KEY (manager_id) REFERANCES role(roleId)
-  PRIMARY KEY (id)
-)
+
+);
 
 INSERT INTO department(name) VALUE ("IT");
 INSERT INTO department(name) VALUE ("HR");
@@ -55,7 +54,20 @@ INSERT INTO role(title, yearly_salary, department_id) VALUES
 ("Auditor","99900","3"),
 ("HR Trainer","85000","2"),
 ("Representative","50000","2"),
-("Financial Analyst","75000","3");
+("Financial Analyst","75000","3"),
+("Sales Person","50000","5");
 
-
+INSERT INTO employee(first_name, last_name, role_id) VALUES
+("John","Doe","2"),
+("Asley","Young","1"),
+("Tom","Hank","3"),
+("Mike","Tyson","4"),
+("Marco","Rudy","5"),
+("Steven","Chin","6"),
+("Taylor","Swift","7"),
+("Elizabet", "Taylor","8"),
+("Jenifer","Lee","9"),
+("Marcus","Roy", "10"),
+("Nicole","Kidman","11");
+  
 
