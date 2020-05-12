@@ -35,6 +35,8 @@ connection.connect(function(err) {
           "view Employees by Department",
           "view Employees by Role",
           "add Employee",
+          "add Department",
+          "add Roles",
           "update Employee",
           "Quit"
         ]
@@ -52,6 +54,12 @@ connection.connect(function(err) {
     else if (res.userChoice === "add Employee") {
         addEmployee();
     }
+    else if (res.userChoice === "add Department") {
+      addDepartment();
+    }
+    else if (res.userChoice === "add Roles") {
+      addRoles();
+  }
     else if (res.userChoice === "update Employee") {
         updateRole();
     }
@@ -94,4 +102,23 @@ connection.connect(function(err) {
       start();
   });
   }
+
   
+  function addDepartment() {
+      inquirer.prompt([
+      {
+          type: "input",
+          name: "depName",
+          message: "Provide the name of the department",
+      }
+  ]).then(res =>{
+    
+    const departmentAdded = res.depName ;
+    const insertRow = connection.query(
+      'INSERT INTO department(name) VALUES(?)',
+      [departmentAdded]
+  )
+
+  console.log(`${departmentAdded} has been added`);
+  start();
+})}
