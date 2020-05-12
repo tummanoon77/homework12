@@ -74,4 +74,14 @@ connection.connect(function(err) {
         start();
     });
 }
-  
+  function viewEmpDepartment(){
+    connection.query("SELECT name, first_name, last_name from department LEFT JOIN role ON role.department_id = department.DepId LEFT JOIN employee ON employee.role_id = role.RoleId",
+    function (err, result) {
+        
+      if (err) throw err;
+
+      console.table(result);
+      start();
+  });
+
+  }
