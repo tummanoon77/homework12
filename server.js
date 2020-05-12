@@ -83,5 +83,15 @@ connection.connect(function(err) {
       console.table(result);
       start();
   });
-
   }
+  function viewEmpRole(){
+    connection.query("SELECT first_name, last_name, title, yearly_salary FROM employee LEFT JOIN role ON employee.role_id = role.RoleId",
+    function (err, result) {
+        
+      if (err) throw err;
+
+      console.table(result);
+      start();
+  });
+  }
+  
