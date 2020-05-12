@@ -15,6 +15,7 @@ CREATE TABLE role(
   yearly_salary DECIMAL,
   department_id INT,
   FOREIGN KEY (department_id) REFERENCES department(DepId)
+  -- FOREIGN KEY department_id REFERENCES department(DepId)
 );
 
 CREATE TABLE employee(

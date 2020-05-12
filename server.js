@@ -31,85 +31,47 @@ connection.connect(function(err) {
         name: "userChoice",
         message: "What would you like to do?",
         choices: [
+          "view all Employees",
+          "view Employees by Department",
+          "view Employees by Role",
           "add Employee",
-          "view Employee",
-          "remove Employee"
+          "update Employee",
+          "Quit"
         ]
       }
-    ]).then(userChoice => {
-      switch(userChoice.memberChoice) {
-      case "add Employee":
+    ]).then(res => {
+      if (res.userChoice === "view all Employees") {
+        viewAllEmp();
+    }
+    else if (res.userChoice === "view Employees by Department") {
+        viewEmpDepartment();
+    }
+    else if (res.userChoice === "view Employees by Role") {
+        viewEmpRole();
+    }
+    else if (res.userChoice === "add Employee") {
         addEmployee();
-        break;
-      case "view Employee":
-        viewEmployee();
-        break;
-      case "remove Employee":
-          removeEmployee();
-        break;  
-       }
+    }
+    else if (res.userChoice === "update Employee") {
+        updateRole();
+    }
+   
+    else if (res.userChoice === "Quit") {
+        console.log("====Goodbye====");
+    }
+    else {
+        connection.end();
+    }
+});
+}
+  function viewAllEmp() {
+    connection.query("SELECT first_name, last_name, title, yearly_salary,name FROM employee LEFT JOIN role ON employee.role_id = role.RoleId LEFT JOIN department ON role.department_id = department.DepId",
+    function (err, result) {
+        
+        if (err) throw err;
+
+        console.table(result);
+        start();
     });
-  }
-  function addEmployee() {
-    inquirer.prompt([
-      {
-        type: "input",
-        name: "engineerName",
-        message: "What is your engineer's name?",
-        validate: answer => {
-          if (answer !== "") {
-            return true;
-          }
-          return "Please enter at least one character.";
-        }
-      },
-      {
-        type: "input",
-        name: "engineerId",
-        message: "What is your engineer's id?",
-        validate: answer => {
-          const pass = answer.match(
-            /^[1-9]\d*$/
-          );
-          if (pass) {
-            if (idArray.includes(answer)) {
-              return "This ID is already taken. Please enter a different number.";
-            } else {
-              return true;
-            }
-                        
-          }
-          return "Please enter a positive number greater than zero.";
-        }
-      },
-      {
-        type: "input",
-        name: "engineerEmail",
-        message: "What is your engineer's email?",
-        validate: answer => {
-          const pass = answer.match(
-            /\S+@\S+\.\S+/
-          );
-          if (pass) {
-            return true;
-          }
-          return "Please enter a valid email address.";
-        }
-      },
-      {
-        type: "input",
-        name: "engineerGithub",
-        message: "What is your engineer's GitHub username?",
-        validate: answer => {
-          if (answer !== "") {
-            return true;
-          }
-          return "Please enter at least one character.";
-        }
-      }
-    ]).then(answers => {
-      const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
-      teamMembers.push(engineer);
-      idArray.push(answers.engineerId);
-    });
-  }
+}
+  
