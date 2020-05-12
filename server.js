@@ -37,6 +37,7 @@ connection.connect(function(err) {
           "add Employee",
           "add Department",
           "add Roles",
+          "remove Employee",
           "update Employee",
           "Quit"
         ]
@@ -59,9 +60,12 @@ connection.connect(function(err) {
     }
     else if (res.userChoice === "add Roles") {
       addRoles();
-  }
+    }
     else if (res.userChoice === "update Employee") {
-        updateRole();
+      updateRole();
+    }
+    else if (res.userChoice === "remove Employee") {
+      removeEmp();
     }
    
     else if (res.userChoice === "Quit") {
@@ -196,3 +200,60 @@ for (var i = 0; i < depArray.length; i++) {
 
 start();
 })}
+  function removeEmp(){
+    inquirer.prompt([
+      {
+        type: 'input',
+        message: 'what is the first name of the new employee?',
+        name: 'first_name'
+      },
+      {
+        type: 'input',
+        message: 'what is the last name of the new employee?',
+        name: 'last_name'
+      },
+      {
+        type: 'number',
+        message: 'what is the role ID of the new employee?',
+        name: 'role_id'
+      },
+      {
+        type: 'number',
+        message: 'what is the manager ID of the new employee?',
+        name: 'manager_id'
+      }
+    ]).then(answer => {
+        const query = `DELETE FROM employee WHERE(first_name, last_name, role_id, manager_id) =("${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`
+        connection.query(query, function (err, res) {
+          if (err) throw err
+          console.table(res)
+          start();
+        })
+      })
+  }
+  function updateRole(){
+// update the employee role
+connection.query('SELECT *  FROM employee', function (err, res) {
+  if (err) throw err
+  console.table(res)
+  inquirer.prompt([
+    {
+      type: 'Number',
+      message: 'What is the ID of the employee you would you like to update?',
+      name: 'id'
+    },
+    {
+      type: 'number',
+      message: 'What new role ID would you like to assign the employee?',
+      name: 'role_id'
+    }
+  ]).then(answer => {
+    const query = `UPDATE employee SET role_id = "${answer.role_id}" WHERE id = ${answer.id}`
+    connection.query(query, function (err, res) {
+      if (err) throw err
+      console.log('Employee role updated!')
+      start();
+    })
+  })
+})
+}
