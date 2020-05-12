@@ -102,8 +102,39 @@ connection.connect(function(err) {
       start();
   });
   }
+    function addEmployee(){
+  inquirer.prompt([
+    {
+      type: 'input',
+      message: 'what is the first name of the new employee?',
+      name: 'first_name'
+    },
+    {
+      type: 'input',
+      message: 'what is the last name of the new employee?',
+      name: 'last_name'
+    },
+    {
+      type: 'number',
+      message: 'what is the role ID of the new employee?',
+      name: 'role_id'
+    },
+    {
+      type: 'number',
+      message: 'what is the manager ID of the new employee?',
+      name: 'manager_id'
+    }
+  ])
 
-  
+    .then(answer => {
+      const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ("${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`
+      connection.query(query, function (err, res) {
+        if (err) throw err
+        console.table(res)
+        start();
+      })
+    })
+}
   function addDepartment() {
       inquirer.prompt([
       {
@@ -121,4 +152,47 @@ connection.connect(function(err) {
 
   console.log(`${departmentAdded} has been added`);
   start();
+})}
+
+function addRoles() {
+  let depArray = connection.query(`SELECT DepId, name FROM department `);
+  depArray = JSON.stringify(depArray);
+  depArray = JSON.parse(depArray);
+
+  let depChoices = [];
+  for (var i = 0; i < depArray.length; i++) {
+      depChoices.push(depArray[i].name);
+  }
+
+  console.log(depChoices);
+
+  inquirer.prompt([
+  {
+      type: "input",
+      name: "roleName",
+      message: "Provide the name of the role",
+  },
+  {
+    type: "input",
+    name: "salary",
+    message: "What is the salary for this role?",
+},
+{
+    type: "list",
+    name: "deptId",
+    message: "What is the name of the department?",
+    choices: depChoices
+}
+]).then(res =>{
+
+const roleAdded = [res.depName,res.salary,res.deptId ];
+for (var i = 0; i < depArray.length; i++) {
+  if (roleAdded.deptId == depArray[i].name) {
+      const insertRow = connection.query('INSERT INTO role(title, yearly_salary, department_id ) VALUES(?,?,?)',
+          [roleAdded.roleName, roleAdded.salary, depArray[i].DepId]);
+      break;
+  }
+}
+
+start();
 })}
